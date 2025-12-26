@@ -1,12 +1,11 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Loader2, Check } from "lucide-react";
-import { fetchImages } from "@/services/image-service";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { getImageUrl } from "@/config/site";
+import { useImages } from "@/hooks/use-images";
 
 interface MediaLibraryProps {
     selectedImage: string | null;
@@ -14,10 +13,7 @@ interface MediaLibraryProps {
 }
 
 export function MediaLibrary({ selectedImage, onSelect }: MediaLibraryProps) {
-    const { data: images, isLoading: isLoadingImages, isError } = useQuery({
-        queryKey: ["images"],
-        queryFn: fetchImages,
-    });
+    const { data: images, isLoading: isLoadingImages, isError } = useImages();
 
     return (
         <ScrollArea className="h-full">
@@ -67,3 +63,4 @@ export function MediaLibrary({ selectedImage, onSelect }: MediaLibraryProps) {
         </ScrollArea>
     );
 }
+

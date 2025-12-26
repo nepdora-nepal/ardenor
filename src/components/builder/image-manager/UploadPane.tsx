@@ -1,28 +1,14 @@
 "use client";
 
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Loader2, Upload } from "lucide-react";
-import { uploadImage } from "@/services/image-service";
-import { toast } from "sonner";
+import { useUploadImage } from "@/hooks/use-images";
 
 interface UploadPaneProps {
     onUploadSuccess: () => void;
 }
 
 export function UploadPane({ onUploadSuccess }: UploadPaneProps) {
-    const queryClient = useQueryClient();
-
-    const uploadMutation = useMutation({
-        mutationFn: uploadImage,
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["images"] });
-            toast.success("Image uploaded successfully");
-            onUploadSuccess();
-        },
-        onError: (error) => {
-            toast.error(`Upload failed: ${error.message}`);
-        },
-    });
+    const uploadMutation = useUploadImage(onUploadSuccess);
 
     const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
@@ -57,3 +43,4 @@ export function UploadPane({ onUploadSuccess }: UploadPaneProps) {
         </div>
     );
 }
+
